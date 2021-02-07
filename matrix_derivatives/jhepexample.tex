@@ -1,0 +1,389 @@
+\documentclass[a4paper,11pt]{article}
+\pdfoutput=1 % if your are submitting a pdflatex (i.e. if you have
+             % images in pdf, png or jpg format)
+
+\usepackage{jheppub} % for details on the use of the package, please
+                     % see the JHEP-author-manual
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[T1]{fontenc} % if needed
+
+\def\tr{\mathrm{Tr}}
+\def\E{\mathbb{E}}
+\def\m#1{\mathbf{#1}}
+\def\v#1{\mathrm{vec}({\mathbf{#1}})}
+\def\F{\mathbb{F}}
+\def\adj{\mathrm{adj}}
+\def\d{\mathrm{d}}
+
+\title{\boldmath Notes of matrix derivatives}
+
+
+
+\author[a]{Yu Chen}
+
+
+% The "\note" macro will give a warning: "Ignoring empty anchor..."
+% you can safely ignore it.
+
+\affiliation[a]{Tencent Company}
+
+
+% e-mail addresses: one for each author, in the same order as the authors
+\emailAdd{alexychen@tencent.com}
+
+
+
+\abstract{This note gives some hints for canonical results of matrix derivatives.}
+
+
+
+\begin{document} 
+\maketitle
+\flushbottom
+
+\section{Notations}
+\begin{table}[h]
+    \caption{Notation}
+    \begin{tabularx}{\textwidth}{p{0.22\textwidth}X}
+    \toprule
+    \textbf{Symbols:} & \\
+    $\m A$ & $\m A$ is a matrix \\
+    $\m A_{ij}$ & $i,j$ element of matrix A \\ 
+    $[\m A]_{ij}$ & $i,j$ element of matrix A \\
+    $:=$ & definition \\
+    $|x\rangle$ & column vector \\
+    $\langle x|$ & (conjugate) transpose of column vector \\
+    $\m X^{-}$ & pseudo inverse of matrix $\m X$ \\
+    $\m X^{\dagger}$ & conjugate transpose of matrix $\m X$ \\
+    
+    \textbf{Operators:} & \\
+    $\otimes$ & Kronecker product \\
+    $\m A^T$ & transpose of matrix $\m A$ \\ 
+    $\m \dagger$ & conjugate transpose of matrix $\m A$ \\
+    $\oplus$ & direct sum \\
+    $\oplus_K$ & Kronecker direct sum \\
+    $\v A$ & vectorized representation of matrix $\m A$ \\
+    $\det $ & determinant \\
+    $\tr$ & trace of a matrix \\
+    $\tr_X$ & partial trace in the corresponding Hilbert space \\
+    $\partial$ & an abstract for partial derivative \\ 
+    $\m K^{(m, n)}$ & commutation matrix \\ 
+    $\bar{\m K}^{(n,m)}$ & partial transpose of commutation matrix \\ 
+    $\m I$ & identity matrix \\ 
+    $\m e^{(n)}_j$ & $n$ dimensional zero vector with one at index $j$ \\
+    $\m E^{(m,n)}_{i,j}$  & $(m,n)$ dimensional zero matrix with one at index $(i,j)$ \\
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+{\color{red}{\textbf{Note} In this note,  I may use Einstein summation convention, where we will sum all repeated index.}}
+
+
+\section{Basic items}
+\subsection{Definition}
+\begin{equation}
+    \m K^{(m,n)} := \sum_i^m \sum_j^n \m E_{ij}^{(m,n)} \otimes \m E_{ji}^{(n,m)} = \m E_{ij}^{(m,n)} \otimes \m E_{ji}^{(n,m)}
+\end{equation}
+\begin{equation}
+    \bar{\m K}^{(m,n)} := \sum_i^m \sum_j^n \m E_{ij}^{(m,n)} \otimes \m E_{ji}^{(n,m)} = \m E_{ij}^{(m,n)} \otimes \m E_{ij}^{(m,nl)}
+\end{equation}
+\begin{equation}
+    \v A = \left(\begin{array}{c} \m A_{\cdot 1} \\ \m A_{\cdot 2} \\ \vdots \end{array}\right)
+\end{equation}
+
+\begin{equation}
+    \frac{\partial \m A}{\partial \m B} := \sum_{r,s} \m E^{(k,l)}_{rs} \otimes \frac{\partial \m A}{b_{rs}} := E^{(k,l)}_{rs} \otimes \frac{\partial \m A}{b_{rs}}, \forall \m A \in \F^{m\times n}, B \in \F^{k\times l}.
+\end{equation}
+\subsection{Proofs}
+\emph{T1.5}
+\begin{equation}
+    \m K^{(m,n)T} = \m K^{(n,m)}
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \m K^{(m,n)T}& = \m E^{(n,m)}_{ji} \otimes \m E^{(m,n)}_{ij} \\ 
+    & = \m E^{(n,m)}_{ij} \otimes \m E^{(m,n)}_{ji} = \m K^{(n,m)}
+\end{align}
+
+\emph{T1.6}
+\begin{equation}
+    \m K^{(m,n)-1} = \m K^{(n,m)} 
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \m K^{(m,n)} \m K^{(n,m)} & =  \m E_{ij}^{(m,n)} \otimes \m E_{ji}^{(n,m)}  \m E_{i'j'}^{(n,m)} \otimes \m E_{j'i'}^{(m,n)} \\ 
+    & = \delta_{ji'}\m E^{(m,m)}_{ij'} \otimes \m E^{(n,n)}_{j,i'}\delta_{ij'} \\ 
+    & = \m E_{ii}^{(m,m)} \otimes \m E_{jj}^{(n,n)} = \m I.
+\end{align}
+
+\emph{T2.13}
+\begin{equation}
+\label{eq:vec_k}
+    \v {ADB} = \m B^T \otimes \m A \v D, \m A \in \mathbb{F}^{m\times n}, \m D \in \mathbb{F}^{n\times p}, \m B \in \mathbb{F}^{p \times q}.
+\end{equation}
+\emph{Proof}
+We show the equality point-wisely.
+\begin{equation}
+    [\v {ADB}]_{(j-1)m+i} = \m A_{is}\m D_{st} \m B_{tj}.
+\end{equation}
+\begin{align}
+    [\m B^T \otimes \m A \v D]_{(j-1)m+i} & = [\m B^T \otimes \m A]_{(j-1)m+i, s}[\v D]_{s} \\ & = [\m B^T]_{j,t} [\m A]_{i, s} [\v D]_{(s,t)} \\ & = \m A_{is} \m D_{s,t} \m B_{tj} \\ & = [\v {ADB}]_{(j-1)m+i}
+\end{align}
+\emph{T2.5}
+\begin{equation}
+\label{eq:commute}
+    \m B \otimes \m A = \m K^{(k,m)} \m A \otimes \m B \m K^{(n,l)},\forall \m A \in \mathbb{F}^{m\times n}, \m B \in \mathbb{F}^{k\times l}
+\end{equation}
+\emph{Proof}
+Firstly, we prove $\forall \m X \in \mathbb{F}^{m\times n}$, we have
+\begin{equation}
+\label{eq:commute0}
+\m K^{(m,n)} \v X = \v {X^T}
+\end{equation}
+As we known, $X_{ij}$ appears at position $m(j-1)+i$ of $\v X$ and at position $n(i-1)+j$, so we just need to prove that $\m K^{(m,n)}$ permute element at $m(j-1)+i$ to $n(i-1)+j$ for all $i,j$. To this ends, we just need to show,
+\begin{equation}
+\label{eq:commute1}
+    [\m K^{(m,n)}]_{n(i-1)+j, \cdot} \cdot \v X = X_{ij}.
+\end{equation}
+Imagine Kronecker product formula in your brain, we can find any contribution to $n(i-1)+j$ row of $\m E^{(m,n)} \otimes \m \E^{(n,m)}$ comes from $i$ row of $\m E^{(m,n)}$ and $j$ row of $\m E^{(n,m)}$, which means only $\m E^{(m,n)}_{ij}$ and $\m E^{(n,m)}_{ji}$ should be kept. Obviously, $\m E^{(m,n)}_{ij} \otimes \m E^{(n,m)}_{ji}$ is non-zero only at index $((i-1)n+j, (j-1)m+i)$. Up to now, we can claim the correctness of Eq.(\ref{eq:commute1}) and Eq.(\ref{eq:commute0}).\\ 
+With this lemma, we can prove Eq.(\ref{eq:commute}) more easily. Choosing an arbitrary matrix $\m X \in \mathbb{F}^{n\times l}$
+ $X \in \mathbb{F}^{n\times l}$, to prove Eq.(\ref{eq:commute}),
+\begin{align}
+    & \m K^{(m,k)}\m B \otimes \m A \v{X}= \m A \otimes \m B \m K^{(n,l)}\vec{X} \\
+    \Leftrightarrow & \m K^{(m,k)}\m B \otimes \m A \v{X} = \m A \otimes \m B \v{X^T} \\
+    \Leftrightarrow & \m K^{(m,k)} \v{A X B^T} = \v{B X^T A^T} \\ 
+    \Leftrightarrow & \v{(AXB^T)^T} = \v{B X^T A^T}
+\end{align}
+Since $X$ is arbitrary, we justify the Eq.(\ref{eq:commute}). \\
+{\color{red}{\emph{Notes}: Although proof of such equality by careful computation is strict, it can not bring us intuition.
+Hence, I use tensor graph language to prove these theorems, which is shown in App.(\ref{app:tn})}}
+
+\emph{T4.2}
+\begin{equation}
+    (\frac{\partial \m A}{\partial \m B})^T = \frac{\partial \m A^T}{\partial \m B^T}
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \frac{\partial \m A^T}{\partial \m B^T} & =  \m E_{rs} \otimes \frac{\partial \m A^T}{\partial b_{sr}} \\ & = \left(\E_{sr} \otimes \frac{\partial A}{\partial b_{sr}}\right)^T \\ & = (\frac{\partial \m A}{\partial \m B})^T.
+\end{align}
+
+\emph{T4.3}
+\begin{equation}
+    \frac{\partial \m A \m C}{\partial \m B} = \frac{\partial \m A}{\partial \m B} I_l \otimes \m C + I_{k}\otimes \m A \frac{\partial \m C}{\partial \m B}, \forall \m C \in \F^{n\times p}.
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \frac{\partial \m A \m C}{\partial \m B} & = \m E^{(k,l)}_{rs} \otimes \frac{\m A \m C}{b_{rs}} \\ & = \m E^{(k,l)}_{rs} \otimes (\frac{\partial \m A}{\partial b_{rs}} \m C + \m A \frac{\partial \m C}{\partial b_{rs}}) \\ & = \m E^{(k,l)}_{rs} I_l \otimes \frac{\partial \m A}{\partial b_{rs}} \m C + I_k \m E^{(k,l)}_{rs} \otimes \m A \frac{\partial \m C}{\partial b_{rs}}) \\ & = \m E^{(k,l)}_{rs} \otimes \frac{\partial \m A}{\partial b_{rs}}\cdot I_l \otimes \m C + I_k \otimes \m A \cdot \m E^{(k,l)}_{rs} \otimes \frac{\partial \m C}{\partial b_{rs}} \\ & = \frac{\partial \m A}{\partial \m B} I_l \otimes \m C + I_{k}\otimes \m A \frac{\partial \m C}{\partial \m B}
+\end{align}
+\emph{T4.4}
+\begin{equation}
+    \frac{\partial \m A \otimes \m D}{\partial \m B} = \frac{\partial \m A}{\partial \m B} \otimes D +  (I_k \otimes \m K^{(m,p)})\frac{\partial \m D}{\partial B} \otimes \m A (I_l \otimes \m K^{(q, n)}) , \forall \m D \in \F^{p\times q}.
+\end{equation}
+
+\begin{align}
+    \frac{\partial \m A \otimes \m D}{\partial \m B} & = \m E_{rs} \otimes \frac{\partial \m A \otimes \m D}{\partial b_{rs}} \\ & = \m E_{rs} \otimes \left(\frac{\partial \m A}{\partial b_{rs}} \otimes \m D  + \m A \otimes \frac{\partial \m D}{\partial b_{rs}}\right)
+    \\ & = \frac{\partial \m A}{\partial \m B}\otimes \m D +\m E_{rs} \otimes (A \otimes \frac{\partial \m D}{\partial b_{rs}})
+\end{align}
+By using Eq.(\ref{eq:commute}), we can continue,
+\begin{align}
+\m E_{rs} \otimes (A \otimes \frac{\partial \m D}{\partial b_{rs}}) & =\m E_{rs} \otimes \left(\m K^{(m,p)} (\frac{\partial \m D}{\partial b_{rs}} \otimes A) \m K^{(q,n)}\right) \\ & = I_k \otimes \m K^{(m,p)} \cdot \left(\m E_{rs} \otimes \frac{\partial \m D}{\partial b_{rs}} \otimes A \otimes \m K^{(q,n)}\right) \\ & = I_k \otimes \m K^{(m,p)} \cdot \left(\m E_{rs} \otimes \frac{\partial \m D}{\partial b_{rs}} \otimes \m A\right) \cdot I_l \otimes K^{(q,n)} \\ & = I_k \otimes \m K^{(m,p)} \cdot \left( \frac{\partial \m D}{\partial \m B}  \otimes \m A\right) \cdot I_l \otimes K^{(q,n)} 
+\end{align}
+
+\emph{T4.6}
+\begin{equation}
+    \frac{\partial A(C(B))}{\partial B} = \left(I_k \otimes \frac{\m A}{\partial \v C}\right) \left(\frac{(\v{C^T})^T}{\partial \m B}\otimes I_n\right) = \left(\frac{\partial \m C^T}{\partial \m B} \otimes I_m\right) \left(I_l \otimes \frac{\partial \m A}{\partial \m C}\right).
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \frac{\partial \m A(\m C(\m B))}{\partial \m B} & = \m E^{(k,l)}_{rs} \otimes \frac{\partial \m A}{\partial b_{rs}} \\ & = \m E^{(k,l)}_{rs} \otimes \m E_{r's'}^{(m,n)} \frac{\partial a_{r's'}}{\partial b_{rs}} \\ & = \m E^{(k,l)}_{rs} \otimes \m E_{r's'}^{(m,n)} \frac{\partial a_{r's'}}{\partial c_{uv}} \frac{\partial c_{uv}}{\partial_{rs}} \\
+    & = \frac{\partial c_{uv}}{\partial \m B} \otimes \m E_{r's'}^{(m,n)} \frac{\partial a_{r's'}}{\partial c_{uv}} \\ & = \frac{\partial c_{uv}}{\partial \m B} \otimes \frac{\partial \m A}{\partial c_{uv}}.
+    \label{eq:chain_rule}
+\end{align}
+
+\emph{T5.1, T5.2}
+\begin{equation}
+    \label{eq:self_dev}
+    \frac{\partial \m A}{\partial \m A} = \bar{\m K}^{(m,n)}, \frac{\partial \m A^T}{\partial \m A} = \m K^{(m,n)}.
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \frac{\partial \m A}{\partial \m A} & = \m E^{(m,n)}_{rs} \otimes \m E^{(m,n)}_{r's'}\frac{\partial a_{r's'}}{\partial a_{rs}} \\ & = \m E^{(m,n)}_{rs} \otimes \m E^{(m,n)}_{r's'} \delta_{rr'} \delta_{ss'} = \bar{\m K}^{(m,n)}.
+\end{align}
+
+\emph{T5.6, T5.7}
+\begin{equation}
+    \frac{\partial \m y}{\partial \m y} = \v {I_n} \forall y \in \F^{(n\times 1)}, \frac{\partial \m y^T}{\partial \m y} = I_n.
+\end{equation}
+\emph{Proof}, trivially.
+
+\emph{T5.8,T5.9}
+\begin{equation}
+    \frac{\partial \m A \m y}{\partial \m y} = \v A, \frac{\partial \m A \m y}{\partial \m y^T} =\m A.
+\end{equation}
+
+\emph{T5.10}
+\begin{equation}
+    \frac{\partial \m y \otimes \m y}{\partial \m y^T} = I_n \otimes \m y + \m y \otimes I_n
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \frac{\partial \m y \otimes \m y}{\partial \m y^T} & = \m e^T_{j} \otimes \frac{\partial \m y \otimes \m y}{\partial y_j} \\ & = \m e^T_{j} \otimes \delta_{jj'}\m e_{j'} \otimes \m y + \m e^T_{j} \otimes \m y \delta_{jj'} \otimes \m e_{j'} \\ & = I_n \otimes \m y + \m y \otimes I_n.
+\end{align}
+
+\emph{T5.11}
+\begin{equation}
+    \frac{\partial \m y^T \m Y \m y}{\partial \m y} = (\m Y + \m Y^T)\m y.
+\end{equation}
+
+\section{Proofs of equation in CookBook}
+\emph{Eq(41)}
+\begin{equation}
+    \partial \det \m X = \tr[\adj \m X)\partial \m X]
+\end{equation}
+\emph{Proof}
+Define $\phi(\m X,\m Y) = \frac{\d \det(\m X + \alpha \m Y)}{\d \alpha}|_{\alpha=0}$, we can easily check that,
+\begin{equation}
+    \phi(I, \m Y) = \tr(\m Y).
+\end{equation}
+Since $\det \m Y = \det \m X \det \m X^{-1} \m Y$, we obtain that,
+\begin{equation}
+    \phi(\m Y, \m Z) = \det \m X \phi(\m X^{-1} \m Y, \m X^{-1} \m Z),
+\end{equation}
+Let $\m Y = \m X$, at once, $\phi(\m X, \m Z) = \det \m X \phi(I, \m X^{-1} \m Z) = \det \m X \tr[\m X^{-1} \m Z]$. Then if $\m Z = \partial \m X$, 
+\begin{equation}
+    \partial \det \m X = \phi(\m X, \partial \m X) = \det \m X \tr[\m X^{-1} \partial \m X] = \tr[\adj X \partial \m X]
+\end{equation}
+\emph{Eq49}
+\begin{equation}
+    \frac{\det \m X}{\partial \m X} = \det \m X (\m X^{-1})^T.
+\end{equation}
+Using Eq.(\ref{eq:self_dev}), we can easily prove it.
+\begin{align}
+    \frac{\partial \det \m X}{\partial \m X} & = \det \m X \tr_{\m X}[I\otimes \m X^{-1} \bar{\m K}] \\
+    & = \det\m X \tr_{X}[I \otimes \m X^{-1} \m E_{ij} \otimes \m E_{ij}] \\ 
+    & = \det\m X \tr_{X}[\m E_{ij} \otimes \m X^{-1} \m E_{ij}] \\ 
+    & = \det\m X \tr_{X}[\m E_{ij} \otimes \langle i'|\m X^{-1} \m E_{ij} | i'\rangle] \\
+    & = \det\m X  \m E_{ij} \langle j| \m X^{-1} | i\rangle \\ 
+    & = \det\m X  (\m X^{-1})^{T}.
+\end{align}
+
+\emph{Eq51}
+\begin{equation}
+    \frac{\partial \det (\m A \m X \m B)}{\partial \m X} = \det (\m A \m X \m B)(\m X^{-1})^T
+\end{equation}
+\emph{Proof}:
+\begin{align}
+    \frac{\partial \det (\m A \m X \m B)}{\partial \m X} & = \det (\m A \m X \m B) \tr_X[I \otimes (\m A \m X \m B)^{-1} \frac{\partial \m A \m X \m B}{\partial \m X}] \\
+    & = \det (\m A \m X \m B) \tr_X[I \otimes (\m A \m X \m B)^{-1} (I \otimes A) (\m E_{ij} \otimes \m E_{ij}) (I \otimes B)] \\ 
+    & = \det (\m A \m X \m B) \tr_X [\m E_{ij} \otimes \m B^{-1} \m X^{-1} \m A^{-1} \m A \m E_{ij} \m B] \\ 
+    & = \det (\m A \m X \m B) \tr_X[\m E_{ij} \otimes \m X^{-1} \m E_{ij}] \\
+    & = \det (\m A \m X \m B) (\m X^{-1})^T 
+\end{align}
+In the last second equality, we have used cyclic property of trace operator.\\
+
+\emph{Eq54}
+\begin{equation}
+    \label{eq:qua}
+    \frac{\partial \det(\m X^T \m A \m X)}{\partial \m X} = \det(\m X^T \m A \m X)\left(\m A \m X(\m X^T \m A \m X)^{-1} + \m A^T \m X (\m X^T \m A^T \m X)^{-1}\right)
+\end{equation}
+\begin{align}
+    \frac{\partial \det(\m X^T \m A \m X)}{\partial \m X} & = \det (\m X^T \m A \m X) \tr_X \left[I \otimes (\m X^T \m A \m X)^{-1} (\frac{\partial \m X^T}{\partial \m X}) I \otimes \m A \m X + I \otimes \m X^T \frac{\partial \m A \m X}{\partial \m X}\right] \\
+    & = \det (\m X^T \m A \m X) \tr_X \left[I \otimes (\m X^T \m A \m X)^{-1}(\m E_{ij} \otimes \m E_{ji}I \otimes \m A \m X + I \otimes \m X^T \m A \m E_{ij}\otimes\m E_{ij}) \right] \\ 
+    & = \det (\m X^T \m A \m X) \tr_X \left[\m E_{ij}\otimes (\m X^T \m A \m X)^{-1}\m E_{ji}\m A \m X + \m E_{ij} \otimes (\m X^T \m A \m X)^{-1} \m X^T \m A \m E_{ij}\right] \\
+    & = \det(\m X^T \m A \m X)\left(\m A \m X(\m X^T \m A \m X)^{-1} + \m A^T \m X (\m X^T \m A^T \m X)^{-1}\right).
+\end{align}
+
+\emph{Eq55}
+\begin{equation}
+    \frac{\partial \ln \det(\m X^T \m X)}{\partial \m X} = 2(\m X^{-})^T
+\end{equation}
+\emph{Proof} By using Eq.(\ref{eq:qua})
+\begin{equation}
+    \frac{\partial \ln \det(\m X^T \m X)}{\partial \m X}  = (\m X(\m X^T \m X)^{-1} + \m X (\m X^T \m X)^{-1}) = 2 (\m X^{-})^T.
+\end{equation}
+Here, we should note that this equation assume row vectors of $\m X$ span a full rank space, otherwise, we can not write $\m X^{-}$ as this simple form.
+
+\emph{Eq58}
+\begin{equation}
+    \frac{\partial \det \m X^k}{\partial \m X} = k \det \m X^k \m (X^{-1})^T
+\end{equation}
+\emph{Proof}
+\begin{equation}
+    \frac{\partial \det \m X^k}{\partial \m X} = \det \m X \frac{\partial \det \m X^{k-1}}{\partial \m X} + \det \m X^k \m (X^{-1})^T.
+\end{equation}
+
+\emph{Eq61}
+\begin{equation}
+    \frac{\m a^T \m X^{-1} \m b}{\partial \m X} = - \m X^{-T} \m a \m b^T \m X^{-T}
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \frac{\m a^T \m X^{-1} \m b}{\partial \m X} & = I \otimes \m a^T \frac{\partial \m X^{-1}}{\partial X} I \otimes \m b \\ & = -(\m X^{-1})_{ki} (\m X^{-1})_{jl} \m E_{ij} \otimes \m a^T \m E_{kl} \m b \\ & = -(\m X^{-T})_{ik}\m a_{k} \m b_l (\m X^{-T})_{lj} \m E_{ij} \\ & = - \m X^{-T} \m a \m b^T \m X^{-T}
+\end{align}
+
+\emph{Eq63}
+\begin{equation}
+    \frac{\tr[\m A \m X^{-1} \m B]}{\partial \m X} = -(\m X^{-1}\m B \m A \m \m X^{-1})^T
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \frac{\tr[\m A \m X^{-1} \m B]}{\partial \m X} & = \frac{\tr[\m X^{-1}\m B \m A]}{\partial \m X} \\ & = - (\m X^{-1})_{ki} (\m X^{-1})_{jl} \tr[\m E_{ij} \otimes \m E_{kl} \m B \m A] \\ & = (\m X^{-1})_{ki} (\m X^{-1})_{jl} (\m B \m A)_{lk} \m E_{ij} \\ 
+    & = -(\m X^{-1}\m B \m A \m \m X^{-1})^T
+\end{align}
+
+\begin{equation}
+    \frac{\partial \m J(\m X)}{\partial \m X^{-1}} = - \m X^T \frac{\partial \m J(\m X)}{\partial \m X^{-1}} \m X^T. 
+\end{equation}
+By using Eq.(\ref{eq:chain_rule}), we can directly obtain this result. \\
+
+\emph{Eq67,68} $\to$ trivially. \\
+
+The whole equations in section 2.4 are trivial, by using the above equation.\\
+
+For section 2.5, we just need to prove the following equation,
+\begin{equation}
+    \frac{\partial \tr[F(\m X)]}{\partial \m X} = f(\m X)^T
+\end{equation}
+\emph{Proof}
+\begin{align}
+    \frac{\partial \tr[F(\m X)]}{\partial \m X} & = \tr[\frac{\partial F(\m X)}{\partial \m X}] \\ & = \tr[I \otimes f(\m X) \m E_{ij} \otimes \m E_{ji}] \\ & = \m E_{ij} f(\m X)_{ij} = f(\m X)^T.
+\end{align}
+
+\appendix
+\label{app:tn}
+\section{Tensor Network}
+% The bibliography will probably be heavily edited during typesetting.
+% We'll parse it and, using the arxiv number or the journal data, will
+% query inspire, trying to verify the data (this will probalby spot
+% eventual typos) and retrive the document DOI and eventual errata.
+% We however suggest to always provide author, title and journal data:
+% in short all the informations that clearly identify a document.
+
+\begin{thebibliography}{99}
+
+\bibitem{a}
+Author, \emph{Title}, \emph{J. Abbrev.} {\bf vol} (year) pg.
+
+\bibitem{b}
+Author, \emph{Title},
+arxiv:1234.5678.
+
+\bibitem{c}
+Author, \emph{Title},
+Publisher (year).
+
+
+% Please avoid comments such as "For a review'', "For some examples",
+% "and references therein" or move them in the text. In general,
+% please leave only references in the bibliography and move all
+% accessory text in footnotes.
+
+% Also, please have only one work for each \bibitem.
+
+
+\end{thebibliography}
+\end{document}
